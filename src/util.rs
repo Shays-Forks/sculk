@@ -31,8 +31,7 @@ pub fn get_loot_table_data(nbt: &NbtCompound) -> LootTableData {
 // Making this borrowed would save like 50µs per call.
 // But i just dont know how to deal with it and its lifetimes.
 pub fn get_owned_string(nbt: &NbtCompound, key: &'static str) -> Result<String, SculkParseError> {
-    nbt
-        .string(key)
+    nbt.string(key)
         .map(|s| s.to_string())
         .ok_or(SculkParseError::InvalidField(key.into()))
 }
@@ -41,11 +40,11 @@ pub fn get_owned_optional_string(nbt: &NbtCompound, key: &'static str) -> Option
     nbt.string(key).map(|s| s.to_string())
 }
 
-pub fn get_optional_lock<'a>(nbt: &NbtCompound) -> Option<String> {
+pub fn get_optional_lock(nbt: &NbtCompound) -> Option<String> {
     nbt.string("Lock").map(|s| s.to_string())
 }
 
-pub fn get_optional_name<'a>(nbt: &NbtCompound) -> Option<String> {
+pub fn get_optional_name(nbt: &NbtCompound) -> Option<String> {
     nbt.string("CustomName").map(|s| s.to_string())
 }
 

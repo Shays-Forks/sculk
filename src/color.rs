@@ -1,3 +1,5 @@
+use std::str::FromStr;
+
 /// Represents a color in Minecraft.
 #[derive(Debug, Clone, PartialEq)]
 #[cfg_attr(feature = "serde", derive(serde::Serialize, serde::Deserialize))]
@@ -80,32 +82,6 @@ impl Color {
         }
     }
 
-    /// Converts a string to a `Color`.
-    pub fn from_str(s: &str) -> Option<Self> {
-        let s = s.to_lowercase();
-        let s = s.as_str();
-
-        match s {
-            "white" => Some(Self::White),
-            "orange" => Some(Self::Orange),
-            "magenta" => Some(Self::Magenta),
-            "light_blue" => Some(Self::LightBlue),
-            "yellow" => Some(Self::Yellow),
-            "lime" => Some(Self::Lime),
-            "pink" => Some(Self::Pink),
-            "gray" => Some(Self::Gray),
-            "light_gray" => Some(Self::LightGray),
-            "cyan" => Some(Self::Cyan),
-            "purple" => Some(Self::Purple),
-            "blue" => Some(Self::Blue),
-            "brown" => Some(Self::Brown),
-            "green" => Some(Self::Green),
-            "red" => Some(Self::Red),
-            "black" => Some(Self::Black),
-            _ => None,
-        }
-    }
-
     /// Converts a `Color` to a string.
     pub fn to_str(&self) -> &'static str {
         match self {
@@ -149,6 +125,36 @@ impl Color {
             Self::Red => "#993333",
             Self::Black => "#191919",
         }
+    }
+}
+
+impl FromStr for Color {
+    type Err = String;
+
+    /// Converts a string to a `Color`.
+    fn from_str(s: &str) -> Result<Self, Self::Err> {
+        let s = s.to_lowercase();
+        let s = s.as_str();
+
+        Ok(match s {
+            "white" => Self::White,
+            "orange" => Self::Orange,
+            "magenta" => Self::Magenta,
+            "light_blue" => Self::LightBlue,
+            "yellow" => Self::Yellow,
+            "lime" => Self::Lime,
+            "pink" => Self::Pink,
+            "gray" => Self::Gray,
+            "light_gray" => Self::LightGray,
+            "cyan" => Self::Cyan,
+            "purple" => Self::Purple,
+            "blue" => Self::Blue,
+            "brown" => Self::Brown,
+            "green" => Self::Green,
+            "red" => Self::Red,
+            "black" => Self::Black,
+            _ => return Err("Unknown".to_string()),
+        })
     }
 }
 

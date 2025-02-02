@@ -1,13 +1,13 @@
-use std::{
-    collections::HashMap,
-    ops::{Deref, DerefMut},
-};
-
 use attribute_modifiers::AttributeModifier;
 use banner_patterns::BannerPattern;
 use base_color::BaseColor;
 use bees::Bee;
 use container::Container;
+use std::str::FromStr;
+use std::{
+    collections::HashMap,
+    ops::{Deref, DerefMut},
+};
 use suspicious_stew_effects::SuspiciousStewEffects;
 use trim::Trim;
 
@@ -72,7 +72,6 @@ impl DerefMut for Components {
         &mut self.0
     }
 }
-
 
 impl Components {
     /// Get a reference to the internal map.
@@ -140,7 +139,9 @@ impl FromCompoundNbt for Components {
                     let nbt = value.compound().ok_or(SculkParseError::InvalidField(
                         "minecraft:block_entity_data".into(),
                     ))?;
-                    Component::BlockEntityData(NoCoordinatesBlockEntity::from_compound_nbt(&nbt)?)
+                    Component::BlockEntityData(Box::from(
+                        NoCoordinatesBlockEntity::from_compound_nbt(&nbt)?,
+                    ))
                 }
                 "minecraft:block_state" => {
                     let nbt = value.compound().ok_or(SculkParseError::InvalidField(
@@ -544,7 +545,7 @@ pub enum Component {
 
     /// [Block entity](https://minecraft.wiki/w/Block_entity) NBT applied when this block is placed.
     /// `minecraft:block_entity_data`
-    BlockEntityData(NoCoordinatesBlockEntity),
+    BlockEntityData(Box<NoCoordinatesBlockEntity>),
 
     /// The block state properties to apply when placing this block.  
     /// `minecraft:block_state`

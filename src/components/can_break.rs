@@ -25,7 +25,7 @@ pub enum CanBreak {
         blocks: Blocks,
 
         /// Block entity NBT to match.
-        nbt: Option<BlockEntity>,
+        nbt: Box<Option<BlockEntity>>,
 
         /// The block state properties to match.
         state: Option<BlockState>,
@@ -83,7 +83,7 @@ impl FromCompoundNbt for CanBreak {
 
             Ok(CanBreak::Single {
                 blocks,
-                nbt: struct_nbt,
+                nbt: Box::from(struct_nbt),
                 state,
                 show_in_tooltip,
             })

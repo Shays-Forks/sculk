@@ -177,7 +177,7 @@ pub enum BlockEntityKind {
     TrappedChest(chest::Chest),
 
     /// `minecraft:trail_spawner`
-    TrialSpawner(trail_spawner::TrailSpawner),
+    TrialSpawner(Box<trail_spawner::TrailSpawner>),
 
     /// `minecraft:vault`
     Vault(vault::Vault),
@@ -319,9 +319,7 @@ impl FromCompoundNbt for BlockEntityKind {
             "minecraft:decorated_pot" => {
                 BlockEntityKind::DecoratedPot(DecoratedPot::from_compound_nbt(nbt)?)
             }
-            "minecraft:dispenser" => {
-                BlockEntityKind::Dispenser(Dispenser::from_compound_nbt(nbt)?)
-            }
+            "minecraft:dispenser" => BlockEntityKind::Dispenser(Dispenser::from_compound_nbt(nbt)?),
             "minecraft:dropper" => BlockEntityKind::Dropper(Dropper::from_compound_nbt(nbt)?),
             "minecraft:enchanting_table" => {
                 BlockEntityKind::EnchantingTable(EnchantingTable::from_compound_nbt(nbt)?)
@@ -450,7 +448,7 @@ impl FromCompoundNbt for BlockEntityKind {
                 BlockEntityKind::TrappedChest(Chest::from_compound_nbt(nbt)?)
             }
             "minecraft:trial_spawner" => {
-                BlockEntityKind::TrialSpawner(TrailSpawner::from_compound_nbt(nbt)?)
+                BlockEntityKind::TrialSpawner(Box::from(TrailSpawner::from_compound_nbt(nbt)?))
             }
             "minecraft:vault" => BlockEntityKind::Vault(Vault::from_compound_nbt(nbt)?),
             "DUMMY" => BlockEntityKind::Dummy,
