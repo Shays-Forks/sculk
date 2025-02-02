@@ -157,7 +157,7 @@ impl FromCompoundNbt for MapBanner {
             return Err(SculkParseError::MissingField("Color".into()));
         };
 
-        let name = get_owned_optional_string(&nbt, "Name");
+        let name = get_owned_optional_string(nbt, "Name");
 
         let pos = nbt
             .compound("Pos")

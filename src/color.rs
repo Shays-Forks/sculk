@@ -51,7 +51,7 @@ impl From<&str> for Color {
 
 impl From<Color> for &str {
     fn from(value: Color) -> Self {
-        &value.to_str()
+        value.to_str()
     }
 }
 
@@ -182,6 +182,6 @@ impl RGB {
     pub fn from_u8(r: u8, g: u8, b: u8) -> Self {
         // Formula: Red<<16 + Green<<8 + Blue
         // see: https://minecraft.wiki/w/Data_component_format#dyed_color
-        RGB((r as i32) << 16 | (g as i32) << 8 | b as i32)
+        RGB(((r as i32) << 16) | ((g as i32) << 8) | b as i32)
     }
 }

@@ -115,7 +115,7 @@ impl FromCompoundNbt for MapDecorations {
     where
         Self: Sized,
     {
-        Ok(MapDecorations(KVPair::from_compound_nbt(&nbt)?))
+        Ok(MapDecorations(KVPair::from_compound_nbt(nbt)?))
     }
 }
 

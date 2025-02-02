@@ -34,7 +34,7 @@ impl FromCompoundNbt for Sign {
     where
         Self: Sized,
     {
-        let is_waxed = get_bool(&nbt, "is_waxed");
+        let is_waxed = get_bool(nbt, "is_waxed");
 
         let front_text = nbt
             .compound("front_text")
@@ -61,7 +61,7 @@ impl FromCompoundNbt for SignText {
     where
         Self: Sized,
     {
-        let has_glowing_text = get_bool(&nbt, "has_glowing_text");
+        let has_glowing_text = get_bool(nbt, "has_glowing_text");
 
         let color = nbt
             .string("color")

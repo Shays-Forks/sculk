@@ -56,6 +56,7 @@ type InternalMap = HashMap<String, Component>;
 /// A collection of components.
 #[derive(Debug, Clone, PartialEq)]
 #[cfg_attr(feature = "serde", derive(serde::Serialize, serde::Deserialize))]
+#[derive(Default)]
 pub struct Components(InternalMap);
 
 impl Deref for Components {
@@ -72,11 +73,6 @@ impl DerefMut for Components {
     }
 }
 
-impl Default for Components {
-    fn default() -> Self {
-        Self(HashMap::new())
-    }
-}
 
 impl Components {
     /// Get a reference to the internal map.
@@ -115,7 +111,7 @@ impl FromCompoundNbt for Components {
             let component: Component = match key.as_str() {
                 "minecraft:attribute_modifiers" => {
                     // since the root value is either list or compound, we need to pass parent nbt.
-                    Component::AttributeModifiers(AttributeModifier::from_compound_nbt(&nbt)?)
+                    Component::AttributeModifiers(AttributeModifier::from_compound_nbt(nbt)?)
                 }
                 "minecraft:banner_patterns" => {
                     let list = value.list().ok_or(SculkParseError::InvalidField(
@@ -223,7 +219,7 @@ impl FromCompoundNbt for Components {
                     )?)
                 }
                 "minecraft:custom_data" => {
-                    Component::CustomData(custom_data::CustomData::from_compound_nbt(&nbt)?)
+                    Component::CustomData(custom_data::CustomData::from_compound_nbt(nbt)?)
                 }
                 "minecraft:custom_model_data" => {
                     let value = value.int().ok_or(SculkParseError::InvalidField(
@@ -250,7 +246,7 @@ impl FromCompoundNbt for Components {
                     Component::DebugStickState(KVPair::from_compound_nbt(&nbt)?)
                 }
                 "minecraft:dyed_color" => {
-                    Component::DyedColor(dyed_color::DyedColor::from_compound_nbt(&nbt)?)
+                    Component::DyedColor(dyed_color::DyedColor::from_compound_nbt(nbt)?)
                 }
                 "minecraft:enchantment_glint_override" => {
                     let value = value.byte().ok_or(SculkParseError::InvalidField(
@@ -425,7 +421,7 @@ impl FromCompoundNbt for Components {
                     potion_contents::PotionContents::from_compound_nbt(&nbt_components)?,
                 ),
                 "minecraft:profile" => {
-                    Component::Profile(SkullProfile::from_component_compound_nbt(&nbt)?)
+                    Component::Profile(SkullProfile::from_component_compound_nbt(nbt)?)
                 }
                 "minecraft:rarity" => {
                     let value = value
@@ -489,7 +485,7 @@ impl FromCompoundNbt for Components {
                     Component::Trim(Trim::from_compound_nbt(&nbt)?)
                 }
                 "minecraft:unbreakable" => {
-                    if let Some(_) = nbt.compound("minecraft:unbreakable") {
+                    if nbt.compound("minecraft:unbreakable").is_some() {
                         let nbt = value
                             .compound()
                             .ok_or(SculkParseError::InvalidField("unbreakable".into()))?;
