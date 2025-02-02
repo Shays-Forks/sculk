@@ -20,7 +20,7 @@ simdnbt = "0.7"
 thiserror = "2"
 
 [dev-dependencies]
-fastanvil = "0.31"
+mca = "1"
 
 [features]
 stats = ["dep:serde"]
