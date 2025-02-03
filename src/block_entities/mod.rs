@@ -1,5 +1,4 @@
 use crate::{error::SculkParseError, traits::FromCompoundNbt, util::get_owned_string};
-use jukebox::Jukebox;
 
 pub mod variant;
 
@@ -66,6 +65,9 @@ pub enum BlockEntityKind {
 
     /// `minecraft:brewing_stand`
     BrewingStand(brewing_stand::BrewingStand),
+
+    /// `minecraft:brushable_block`
+    BrushableBlock(suspicious_block::SuspiciousBlock),
 
     /// `minecraft:calibrated_sculk_sensor`
     CalibratedSculkSensor(calibrated_sculk_sensor::CalibratedSculkSensor),
@@ -214,6 +216,7 @@ impl FromCompoundNbt for BlockEntityKind {
         use furnace::Furnace;
         use hopper::Hopper;
         use jigsaw::Jigsaw;
+        use jukebox::Jukebox;
         use lectern::Lectern;
         use mob_spawner::MobSpawner;
         use piston::Piston;
@@ -438,6 +441,9 @@ impl FromCompoundNbt for BlockEntityKind {
             "minecraft:smoker" => BlockEntityKind::Smoker(Furnace::from_compound_nbt(nbt)?),
             "minecraft:soul_campfire" => {
                 BlockEntityKind::SoulCampfire(Campfire::from_compound_nbt(nbt)?)
+            }
+            "minecraft:brushable_block" => {
+                BlockEntityKind::BrushableBlock(SuspiciousBlock::from_compound_nbt(nbt)?)
             }
             "minecraft:suspicious_gravel" => {
                 BlockEntityKind::SuspiciousGravel(SuspiciousBlock::from_compound_nbt(nbt)?)
