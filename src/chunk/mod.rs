@@ -88,7 +88,7 @@ pub struct Chunk {
     pub post_processing: Option<Vec<i16>>,
 
     /// Structure data in this chunk.
-    pub structures: Structures,
+    pub structures: Option<Structures>,
 }
 
 #[derive(Debug, Clone, PartialEq)]
@@ -228,8 +228,7 @@ impl FromCompoundNbt for Chunk {
 
         let structures = nbt
             .compound("structures")
-            .map(|nbt| Structures::from_compound_nbt(&nbt))
-            .ok_or(SculkParseError::MissingField("structures".into()))??;
+            .and_then(|nbt| Structures::from_compound_nbt(&nbt).ok());
 
         Ok(Chunk {
             data_version,
