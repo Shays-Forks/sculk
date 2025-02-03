@@ -1,5 +1,4 @@
 use crate::{error::SculkParseError, traits::FromCompoundNbt, util::get_owned_string};
-use jukebox::Jukebox;
 
 pub mod variant;
 
@@ -8,6 +7,7 @@ pub mod barrel;
 pub mod beacon;
 pub mod beehive;
 pub mod brewing_stand;
+pub mod brushable_block;
 pub mod calibrated_sculk_sensor;
 pub mod campfire;
 pub mod chest;
@@ -66,6 +66,9 @@ pub enum BlockEntityKind {
 
     /// `minecraft:brewing_stand`
     BrewingStand(brewing_stand::BrewingStand),
+
+    /// `minecraft:brushable_block`
+    BrushableBlock(brushable_block::BrushableBlock),
 
     /// `minecraft:calibrated_sculk_sensor`
     CalibratedSculkSensor(calibrated_sculk_sensor::CalibratedSculkSensor),
@@ -187,9 +190,7 @@ pub enum BlockEntityKind {
 }
 
 impl FromCompoundNbt for BlockEntityKind {
-    fn from_compound_nbt(
-        nbt: &simdnbt::borrow::NbtCompound,
-    ) -> Result<Self, crate::error::SculkParseError>
+    fn from_compound_nbt(nbt: &simdnbt::borrow::NbtCompound) -> Result<Self, SculkParseError>
     where
         Self: Sized,
     {
@@ -198,6 +199,7 @@ impl FromCompoundNbt for BlockEntityKind {
         use beacon::Beacon;
         use beehive::Beehive;
         use brewing_stand::BrewingStand;
+        use brushable_block::BrushableBlock;
         use calibrated_sculk_sensor::CalibratedSculkSensor;
         use campfire::Campfire;
         use chest::Chest;
@@ -214,6 +216,7 @@ impl FromCompoundNbt for BlockEntityKind {
         use furnace::Furnace;
         use hopper::Hopper;
         use jigsaw::Jigsaw;
+        use jukebox::Jukebox;
         use lectern::Lectern;
         use mob_spawner::MobSpawner;
         use piston::Piston;
@@ -296,6 +299,9 @@ impl FromCompoundNbt for BlockEntityKind {
             }
             "minecraft:brewing_stand" => {
                 BlockEntityKind::BrewingStand(BrewingStand::from_compound_nbt(nbt)?)
+            }
+            "minecraft:brushable_block" => {
+                BlockEntityKind::BrushableBlock(BrushableBlock::from_compound_nbt(nbt)?)
             }
             "minecraft:calibrated_sculk_sensor" => BlockEntityKind::CalibratedSculkSensor(
                 CalibratedSculkSensor::from_compound_nbt(nbt)?,
