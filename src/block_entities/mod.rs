@@ -330,7 +330,8 @@ impl FromCompoundNbt for BlockEntityKind {
             }
             "minecraft:end_portal" => BlockEntityKind::EndPortal,
             "minecraft:furnace" => BlockEntityKind::Furnace(Furnace::from_compound_nbt(nbt)?),
-            "minecraft:oak_hanging_sign"
+            "minecraft:hanging_sign"
+            | "minecraft:oak_hanging_sign"
             | "minecraft:spruce_hanging_sign"
             | "minecraft:birch_hanging_sign"
             | "minecraft:jungle_hanging_sign"
